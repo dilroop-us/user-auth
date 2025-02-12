@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <!-- Add Bootstrap CSS (via CDN) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container my-4">
+        <h1>Admin Panel</h1>
+        <a href="/create-user/" class="btn btn-primary mb-3">Create New User</a>
+
+        <!-- Search and Filter Form -->
+        <form method="GET" action="" class="mb-3">
+            <div class="d-flex">
+                <input type="text" name="search" class="form-control" placeholder="Search by username or email" value="{{ request.GET.search|default:'' }}">
+                <select name="filter" class="form-control ms-2">
+                    <option value="" {% if request.GET.filter == "" %}selected{% endif %}>All</option>
+                    <option value="active" {% if request.GET.filter == "active" %}selected{% endif %}>Active Users</option>
+                    <option value="inactive" {% if request.GET.filter == "inactive" %}selected{% endif %}>Inactive Users</option>
+                </select>
+                <button type="submit" class="btn btn-secondary ms-2">Apply</button>
+            </div>
+        </form>
+
+        <!-- Users Table -->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                        <a href="/update-user/{{ user.id }}/" class="btn btn-warning btn-sm">Edit</a>
+                        <a href="/delete-user/{{ user.id }}/" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">No users found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="/home/" class="btn btn-info">Back to Home</a>
+        <a href="/logout/" class="btn btn-danger">Log Out</a>
+    </div>
+
+    <!-- Add Bootstrap JS and dependencies (via CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
