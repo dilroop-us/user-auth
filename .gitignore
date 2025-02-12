@@ -1,4 +1,9 @@
 .env
 
+.venv
+.idea
+.vscode
+
+
 db.sqlite3
 User.session.sql
